@@ -15,6 +15,7 @@ ReactDOM.render(
                     },
                     body: {
                         background: t.colors.dark[8],
+                        margin: 0,
                     },
                 })}
             />

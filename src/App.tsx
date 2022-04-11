@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, createStyles, Stack } from '@mantine/core';
+import { Box, Center, createStyles, Stack, Text } from '@mantine/core';
 
 const useStyles = createStyles((t) => ({
     root: {
@@ -16,8 +16,10 @@ function App() {
     const { classes } = useStyles();
     return (
         <Stack justify="space-between" className={classes.root}>
-            <Box>MainContent</Box>
-            <Center className={classes.footer}>Footer</Center>
+            <Text>MainContent</Text>
+            <Center className={classes.footer}>
+                <Text>Footer</Text>
+            </Center>
         </Stack>
     );
 }
