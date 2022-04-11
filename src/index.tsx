@@ -1,12 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Global, MantineProvider } from '@mantine/core';
+import { theme } from '@/config';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MantineProvider theme={theme}>
+      <Global styles={(t) => ({
+        '*': {
+          color: t.white
+        },
+        body: {
+          background: t.colors.dark[8]
+        }
+      })} />
+      <App />
+    </MantineProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
