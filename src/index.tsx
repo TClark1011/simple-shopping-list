@@ -6,20 +6,22 @@ import { Global, MantineProvider } from '@mantine/core';
 import { theme } from '@/config';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <MantineProvider theme={theme}>
-      <Global styles={(t) => ({
-        '*': {
-          color: t.white
-        },
-        body: {
-          background: t.colors.dark[8]
-        }
-      })} />
-      <App />
-    </MantineProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <MantineProvider theme={theme}>
+            <Global
+                styles={(t) => ({
+                    '*': {
+                        color: t.white,
+                    },
+                    body: {
+                        background: t.colors.dark[8],
+                    },
+                })}
+            />
+            <App />
+        </MantineProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
