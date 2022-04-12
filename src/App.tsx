@@ -1,27 +1,34 @@
 import React from 'react';
-import { Box, Center, createStyles, Stack, Text } from '@mantine/core';
+import { createStyles, Stack } from '@mantine/core';
+import AddNewItem from '@/components/AddNewItem';
+import { ActiveItemMenu, ShoppingList } from '@/components';
 
 const useStyles = createStyles((t) => ({
     root: {
         background: t.colors.dark[8],
-        minHeight: '100vh',
+        height: '100vh',
     },
     footer: {
         height: 64,
         background: t.colors.dark[7],
     },
+    addNew: {
+        margin: 16,
+    },
 }));
 
-function App() {
+const App = () => {
     const { classes } = useStyles();
+
     return (
-        <Stack justify="space-between" className={classes.root}>
-            <Text>MainContent</Text>
-            <Center className={classes.footer}>
-                <Text>Footer</Text>
-            </Center>
-        </Stack>
+        <>
+            <Stack justify="space-between" className={classes.root}>
+                <ShoppingList />
+                <AddNewItem className={classes.addNew} />
+            </Stack>
+            <ActiveItemMenu />
+        </>
     );
-}
+};
 
 export default App;

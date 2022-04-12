@@ -10,9 +10,6 @@ ReactDOM.render(
         <MantineProvider theme={theme}>
             <Global
                 styles={(t) => ({
-                    '*': {
-                        color: t.white,
-                    },
                     body: {
                         background: t.colors.dark[8],
                         margin: 0,
