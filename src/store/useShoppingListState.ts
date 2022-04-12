@@ -2,7 +2,7 @@ import create from 'zustand';
 import { persist, combine } from 'zustand/middleware';
 import { ShoppingListItem, Updater } from '@/types';
 import { nanoid } from 'nanoid';
-import { A, B, D, F, O, pipe } from '@mobily/ts-belt';
+import { A, B, D, F, flow, O, pipe } from '@mobily/ts-belt';
 import {
     markItemForDelete,
     rejectItemsMarkedForDelete,
@@ -42,6 +42,7 @@ const state = combine(
     {
         shoppingList: [] as readonly ShoppingListItem[],
         targetedItemId: null as null | string,
+        showCheckedItems: false,
     },
     (set, get) => ({
         createNewItem: (title: string) =>
@@ -73,6 +74,17 @@ const state = combine(
                     )
                 )
             ),
+        getVisibleItems: (): readonly ShoppingListItem[] =>
+            pipe(
+                get()?.shoppingList || [],
+                rejectItemsMarkedForDelete,
+                A.reject<ShoppingListItem>(
+                    flow(
+                        D.getUnsafe('checked'),
+                        B.and(!get()?.showCheckedItems)
+                    )
+                )
+            ),
     })
 );
 
@@ -90,4 +102,13 @@ export const useShoppingListTargetedItem = () => {
     const targetedItem = useMemo(getFullTargetedItem, [targetedItemId]);
     return targetedItem;
 };
+
+export const useViewableShoppingListItems = () => {
+    const { getVisibleItems, shoppingList } = useShoppingListState(
+        D.selectKeys(['getVisibleItems', 'shoppingList'])
+    );
+    const visibleItems = useMemo(getVisibleItems, [shoppingList]);
+    return visibleItems;
+};
+
 export default useShoppingListState;

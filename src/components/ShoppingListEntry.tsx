@@ -4,6 +4,7 @@ import { WithClassName, WithStyle } from '@/types';
 import ShoppingListItem from '@/types/ShoppingListItem';
 import { withCanceledEvent } from '@/utils';
 import { createStyles, Paper, Text, CSSObject, Checkbox } from '@mantine/core';
+import { useHover } from '@mantine/hooks';
 import { D } from '@mobily/ts-belt';
 import React from 'react';
 
@@ -12,21 +13,26 @@ const activeStyle: ThemeSelector<[], CSSObject> = (t) => ({
     background: t.colors.gray[8],
 });
 
-const useStyles = createStyles((t) => ({
-    root: {
-        width: '100%',
-        padding: 16,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        '&:active': activeStyle(t),
-        // position: 'absolute',
-    },
-    active: activeStyle(t),
-    buttonLabel: {
-        color: t.colors.red[9],
-    },
-}));
+type ShoppingListEntryUseStyleProps = {
+    checkboxIsActive: boolean;
+};
+
+const useStyles = createStyles(
+    (t, { checkboxIsActive }: ShoppingListEntryUseStyleProps) => ({
+        root: {
+            width: '100%',
+            padding: 16,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            '&:active': !checkboxIsActive && activeStyle(t),
+        },
+        active: activeStyle(t),
+        buttonLabel: {
+            color: t.colors.red[9],
+        },
+    })
+);
 
 export type ShoppingListEntryProps = WithClassName &
     WithStyle & {
@@ -38,7 +44,10 @@ const ShoppingListEntry = ({
     style = {},
     data: { title, _id, checked },
 }: ShoppingListEntryProps) => {
-    const { classes, cx } = useStyles();
+    const { hovered: checkboxIsHovered, ref: checkboxRef } = useHover();
+    const { classes, cx } = useStyles({
+        checkboxIsActive: checkboxIsHovered,
+    });
 
     const { toggleItemChecked, setTargetedItem, targetedItemId } =
         useShoppingListState(
@@ -66,7 +75,11 @@ const ShoppingListEntry = ({
             style={style}
         >
             <Text>{title}</Text>
-            <Checkbox checked={checked} onChange={onCheckedChange} />
+            <Checkbox
+                checked={checked}
+                ref={checkboxRef as any}
+                onChange={onCheckedChange}
+            />
         </Paper>
     );
 };
